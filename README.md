@@ -1,12 +1,12 @@
 # index-n2
 
+https://github.com/user-attachments/assets/f25b8ad1-d227-4c5d-9487-09ad5590febb
+
 A local viewer for [fieldtheory-cli](https://github.com/afar1/fieldtheory-cli). Runs a Node server on `localhost:5787` and opens a browser tab. Reads from `~/.ft-bookmarks/`; writes derived caches to `~/.index-n2/`.
 
 Third-party tool, not affiliated with fieldtheory-cli.
 
-> Made for Macintosh. The GUI runs anywhere; the CLI's default sync targets macOS. For cross-platform options, see the CLI's `ft sync --api` mode and its caveats.
-
----
+Made for Macintosh. The GUI runs anywhere; the CLI's default sync targets macOS. For cross-platform options, see the CLI's `ft sync --api` mode and its caveats.
 
 ## Install
 
@@ -23,8 +23,6 @@ index-n2
 ```
 
 The server binds `127.0.0.1:5787` and opens `http://localhost:5787/`. If 5787 is taken it walks up to 5797. Stop with Ctrl-C.
-
----
 
 ## Overview
 
@@ -58,8 +56,6 @@ Reads `~/.ft-bookmarks/bookmarks.jsonl` and `bookmarks.db` directly. Renders the
 - **Sort by engagement** — likes, reposts, bookmarks, or random.
 - **Gallery view.** Image-only, flattened across bookmarks.
 - **Archive.** Hide bookmarks from the main grid without touching source data.
-
----
 
 ## Configuration
 
@@ -96,8 +92,6 @@ Unknown keys are stripped on the next save; defaults backfill missing keys. Sche
 index-n2 --no-open      Skip browser auto-open for this run
 ```
 
----
-
 ## Layout
 
 ```
@@ -121,8 +115,6 @@ index-n2 process          localhost:5787
 
 Per-file caches (palette, pHash, thumbnails) are keyed by media filename and grow incrementally — only files in `~/.ft-bookmarks/media/` that aren't already in the cache trigger work. Bookmark records reload when `bookmarks.jsonl` or the SQLite mtime changes.
 
----
-
 ## Security
 
 The server is a localhost-only Node process. Defenses:
@@ -136,15 +128,11 @@ The server is a localhost-only Node process. Defenses:
 
 No remote endpoints are contacted. All media is read from `~/.ft-bookmarks/media/`, which ft itself populates.
 
----
-
 ## Limitations
 
 - Categories are read-only. No in-app classification editor.
 - Cancelling `ft fetch-media` mid-run leaves orphaned files on disk: ft writes its manifest at end-of-run, so a cancelled batch's downloads are invisible to ft and re-fetched next time. Bandwidth waste, no corruption. Tracked upstream.
 - A small set of permanently unfetchable URLs (deleted tweets, protected accounts) keep the "N unfetched" badge non-zero.
-
----
 
 ## Development
 
@@ -177,8 +165,6 @@ npm run format
 ```
 
 The codebase is React 19 + TypeScript + Vite + Tailwind 4 + shadcn/ui. State is React Context + `useReducer`, split per concern under `src/contexts/`. No Redux, no Zustand. Path imports use `@/` for `src/`. Styling sticks to shadcn semantic tokens; deviations are recorded inline next to the code that needs them.
-
----
 
 ## Credits
 
