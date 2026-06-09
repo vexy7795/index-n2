@@ -30,7 +30,7 @@
   "type": "module",
   "main": "server.js",
   "bin": {
-    "index-n2": "./server.js"
+    "index-n2": "server.js"
   },
   "engines": {
     "node": ">=20"
